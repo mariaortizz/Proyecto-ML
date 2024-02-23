@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import pickle
 import traceback
 import inspect
+import time
 
 #librerias modelos
 from sklearn.pipeline import Pipeline
@@ -36,6 +37,16 @@ from utils import funciones as f
 #rutas
 datos_limpios_path = r'data\processed\df_limpio.csv' 
 
+def timeit(func):
+    def envoltorio(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} - Tiempo transcurrido: {end_time - start_time} segundos")
+        return result
+    return envoltorio
+
+@timeit
 def extraccion_datos(datos_limpios_path):
     '''Función para extraer los datos del CSV que limpio previamente'''
     try:
@@ -50,6 +61,7 @@ def extraccion_datos(datos_limpios_path):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def dividir_datos(df):
     '''Función para dividir los datos del df obtenido antes'''
     try:
@@ -69,6 +81,7 @@ def dividir_datos(df):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def tratar_cee(X_train):
     '''Func para tratar la columna CEE'''
     try:
@@ -88,6 +101,7 @@ def tratar_cee(X_train):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def tratar_zona(X_train):
     '''Función para tratar la columnas zona'''
     try:
@@ -102,6 +116,7 @@ def tratar_zona(X_train):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def tratar_tipo(X_train):
     '''Función para tratar el tipo de inmueble'''
     try:
@@ -119,6 +134,7 @@ def tratar_tipo(X_train):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def escalado(X_train):
     '''Función para escalar las columnas'''
     try:
@@ -133,6 +149,7 @@ def escalado(X_train):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def procesamiento_train(X_train):
     '''Función para tratar los datos de train'''
     try:
@@ -154,6 +171,7 @@ def procesamiento_train(X_train):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def cluster(X_train, y_train):
     '''Función para aplicar un cluster'''
     try:
@@ -177,6 +195,7 @@ def cluster(X_train, y_train):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def cluster_0(df_unido_0):
     '''Funcion para entrenar el cluster 0'''
     try:
@@ -212,6 +231,7 @@ def cluster_0(df_unido_0):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def cluster_1(df_unido_1):
     '''Funcion para entrenar el cluster 1'''
     try:
@@ -249,6 +269,7 @@ def cluster_1(df_unido_1):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
+@timeit
 def cluster_2(df_unido_2):
     '''Funcion para entrenar el cluster 2'''
     try:
@@ -297,3 +318,4 @@ if __name__ == "__main__":
         print(f"No puede entrenar los modelos por la {func} - {a}")
 
 print('Modelos entrenados - proceso terminado')
+time.sleep(3)
