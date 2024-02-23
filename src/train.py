@@ -282,22 +282,12 @@ def cluster_2(df_unido_2):
         func = inspect.stack()[1].function
         print(f"No se pudo terminar el proceso en la función {func} por {a}")
 
-def tratamiento_y_train(y_train):
-    try:
-        y_train_t = np.sqrt(y_train)
-        return y_train_t
-    except Exception as a:
-        traceback.print_exc()
-        func = inspect.stack()[1].function
-        print(f"No se pudo terminar el proceso en la función {func} por {a}")
-
 if __name__ == "__main__":
     try:
         df = extraccion_datos(datos_limpios_path)
         X_train_0, y_train, X_test, y_test = dividir_datos(df)
         X_train, o_encoder, l_encoder, oh_encoder, scaler = procesamiento_train(X_train_0)
-        y_train_t = tratamiento_y_train(y_train) #TODO
-        df_0, df_1, df_2, km_0 = cluster(X_train, y_train_t)
+        df_0, df_1, df_2, km_0 = cluster(X_train, y_train)
         modelo_0 = cluster_0(df_0)
         modelo_1 = cluster_1(df_1)
         modelo_2 = cluster_2(df_2)
