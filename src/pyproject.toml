@@ -1,0 +1,15 @@
+[project]
+# Support Python 3.10+
+name = "Proyecto_ML"
+requires-python = ">= 3.10"
+
+[tool.ruff]
+lint.select = [
+    "E", # pycodestyle
+    "F", # pyflakes
+    "UP", # pyupgrade
+]
+
+
+
+

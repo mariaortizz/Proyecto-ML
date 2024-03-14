@@ -1,38 +1,29 @@
+#modulos propios
+from utils import funciones as f
 
 #librerias estandar
-from pathlib import Path
-import sys
 import os
 import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import pickle
 import traceback
 import inspect
 import time
 
 #librerias modelos
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, OneHotEncoder, RobustScaler
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import OrdinalEncoder, \
+    LabelEncoder, OneHotEncoder, RobustScaler
+from sklearn.model_selection import train_test_split
 
-from sklearn.svm import SVR
-from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
-from sklearn.ensemble import  RandomForestRegressor,  VotingRegressor, GradientBoostingRegressor, HistGradientBoostingRegressor, StackingRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import  RandomForestRegressor,  \
+    VotingRegressor, HistGradientBoostingRegressor, StackingRegressor
 from xgboost import XGBRegressor
 
 #cluster
-from sklearn.metrics import silhouette_score
-from yellowbrick.cluster import silhouette_visualizer
 from sklearn.cluster import KMeans 
 
 pd.set_option('display.max_columns', None)
 # sys.path.append(r'PRIVADO_MARIA\Proyecto_ML\src')
 
-#modulos propios
-from utils import funciones as f
 
 #rutas
 datos_limpios_path = r'data\processed\df_limpio.csv' 
@@ -40,9 +31,9 @@ datos_limpios_path = r'data\processed\df_limpio.csv'
 def timeit(func):
     def envoltorio(*args, **kwargs):
         start_time = time.time()
-        result = func(*args, **kwargs)
+        result = func(*args,**kwargs)
         end_time = time.time()
-        print(f"{func.__name__} - Tiempo transcurrido: {end_time - start_time} segundos")
+        print(f"{func.__name__}-Tiempo transcurrido: {end_time - start_time} segundos")
         return result
     return envoltorio
 
@@ -68,7 +59,8 @@ def dividir_datos(df):
         X = df.drop(columns=['precio_venta_por_m2'], axis=1)
         y = df['precio_venta_por_m2']
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 33)
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size = 0.20, random_state = 33)
 
         X_train.reset_index(drop=True, inplace=True)
         X_test.reset_index(drop=True, inplace=True)
@@ -120,9 +112,15 @@ def tratar_zona(X_train):
 def tratar_tipo(X_train):
     '''Función para tratar el tipo de inmueble'''
     try:
-        oh_encoder = OneHotEncoder(sparse_output=False,handle_unknown='ignore')
+        oh_encoder = OneHotEncoder(
+            sparse_output=False,
+            handle_unknown='ignore'
+            )
         encoded = oh_encoder.fit_transform(X_train[['tipo_inmueble']])
-        encoded_df = pd.DataFrame(encoded, columns=oh_encoder.get_feature_names_out(['tipo_inmueble']))
+        encoded_df = pd.DataFrame(
+            encoded, 
+            columns=oh_encoder.get_feature_names_out(['tipo_inmueble'])
+            )
 
         X_train = pd.concat([X_train, encoded_df], axis=1)
         X_train = X_train.drop(['tipo_inmueble'], axis=1)
@@ -213,12 +211,15 @@ def cluster_0(df_unido_0):
                             min_child_weight = 5,
                             n_estimators = 100)
         base_models=[
-                            ('rfr', model_cl0_111),
-                            ('hs', model_cl0_222),
-                            ('xgb', model_cl0_333)
+                    ('rfr', model_cl0_111),
+                    ('hs', model_cl0_222),
+                    ('xgb', model_cl0_333)
                         ]
         meta_model = LinearRegression()
-        model_555 = StackingRegressor(estimators=base_models, final_estimator=meta_model)
+        model_555 = StackingRegressor(
+            estimators=base_models, 
+            final_estimator=meta_model
+            )
 
         model_c_0 = model_555
 
@@ -256,7 +257,10 @@ def cluster_1(df_unido_1):
 
         meta_model = LinearRegression()
 
-        model_555 = StackingRegressor(estimators=base_models, final_estimator=meta_model)
+        model_555 = StackingRegressor(
+            estimators=base_models, 
+            final_estimator=meta_model
+            )
 
         model_c_1 = model_555
 
@@ -307,7 +311,7 @@ if __name__ == "__main__":
     try:
         df = extraccion_datos(datos_limpios_path)
         X_train_0, y_train, X_test, y_test = dividir_datos(df)
-        X_train, o_encoder, l_encoder, oh_encoder, scaler = procesamiento_train(X_train_0)
+        X_train, o_encoder, l_encoder, oh_encoder, scaler=procesamiento_train(X_train_0)
         df_0, df_1, df_2, km_0 = cluster(X_train, y_train)
         modelo_0 = cluster_0(df_0)
         modelo_1 = cluster_1(df_1)

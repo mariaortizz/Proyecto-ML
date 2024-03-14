@@ -3,11 +3,9 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 from scipy.stats import kurtosis, skew, probplot, shapiro, spearmanr, kruskal
 from geopy.geocoders import Nominatim
 import time
-import pandas as pd
 import plotly.express as px
 import traceback
 
@@ -103,7 +101,7 @@ def graficos_variables_cualit(data):
                 ax.set_xticklabels(data[columna].sort_values().unique(), rotation=90)
                 #se superponen los valores porque me da uns advertencia al aplicar este parametro, no sé como sacarla :)
                 plt.title(f"Conteo variable {columna}")
-                plt.show();
+                plt.show()
             else:
                 print('No es necesario graficar porque tiene un solo valor dentro de la columna')
             print(data[columna].value_counts())
@@ -130,7 +128,7 @@ def rellenar_annios_nulos_necesitan_reforma(data):
     '''Función para rellenar los annios que vienen nulos'''
     try:
         #diccionario para ver si tenemos todos las ubicaciones o no
-        dicc_annios_antiguos = data[(data['necesita_reforma'] == True) & (data['annio_construccion'].notna())].sort_values(by = 'annio_construccion').groupby('ubicacion')[['annio_construccion']].median(numeric_only = True).astype(int).reset_index().to_dict('records')
+        dicc_annios_antiguos = data[(data['necesita_reforma']) & (data['annio_construccion'].notna())].sort_values(by = 'annio_construccion').groupby('ubicacion')[['annio_construccion']].median(numeric_only = True).astype(int).reset_index().to_dict('records')
         
         #agrega las ubicaciones que no existen, asignando la media de los inmuebles que necesitan reforma
         dicc_annios_antiguos = dicc_annios_antiguos + [{'ubicacion': 'Horcajo, Madrid', 'annio_construccion': 1957}, 
@@ -141,7 +139,7 @@ def rellenar_annios_nulos_necesitan_reforma(data):
         data_unido = pd.merge(data,data_annios_antiguos, on='ubicacion', how = 'left')
 
         #asigna el valor de el annio en base a la la ubicacion
-        data_unido['annio_construccion'] = data_unido.apply(lambda x: x.annio_construccion_y if ((x.necesita_reforma == True) & (pd.isna(x.annio_construccion_x))) else x.annio_construccion_x, axis = 1)
+        data_unido['annio_construccion'] = data_unido.apply(lambda x: x.annio_construccion_y if ((x.necesita_reforma) & (pd.isna(x.annio_construccion_x))) else x.annio_construccion_x, axis = 1)
 
         data = data_unido.drop(columns=['annio_construccion_y', 'annio_construccion_x'], axis = 1)
     
@@ -154,7 +152,7 @@ def rellenar_annios_nulos_no_necesitan_reforma(data):
     '''Función para rellenar los annios que vienen nulos'''
     try:
         #diccionario para ver si tenemos todos las ubicaciones o no
-        dicc_annios_nuevo = data[(data['necesita_reforma'] == False) & (data['annio_construccion'].notna())].sort_values(by = 'annio_construccion').groupby('ubicacion')[['annio_construccion']].median(numeric_only = True).astype(int).reset_index().to_dict('records')
+        dicc_annios_nuevo = data[(~data['necesita_reforma']) & (data['annio_construccion'].notna())].sort_values(by = 'annio_construccion').groupby('ubicacion')[['annio_construccion']].median(numeric_only = True).astype(int).reset_index().to_dict('records')
         
         #agrega las ubicaciones que no existen, asignando la media de los inmuebles que no necesitan reforma
         dicc_annios_nuevo = dicc_annios_nuevo + [{'ubicacion': 'Cuatro Vientos, Madrid', 'annio_construccion': 1973}]
@@ -163,7 +161,7 @@ def rellenar_annios_nulos_no_necesitan_reforma(data):
         data_unido_nuevo = pd.merge(data,data_annios_nuevo, on='ubicacion', how='left')
 
         #asigna el valor de el annio en base a la la ubicacion
-        data_unido_nuevo['annio_construccion'] = data_unido_nuevo.apply(lambda x: x.annio_construccion_y if ((x.necesita_reforma == False) & (pd.isna(x.annio_construccion_x))) else x.annio_construccion_x, axis = 1)
+        data_unido_nuevo['annio_construccion'] = data_unido_nuevo.apply(lambda x: x.annio_construccion_y if ((~x.necesita_reforma) & (pd.isna(x.annio_construccion_x))) else x.annio_construccion_x, axis = 1)
 
         data = data_unido_nuevo.drop(columns=['annio_construccion_x', 'annio_construccion_y'], axis = 1)
     
@@ -174,7 +172,7 @@ def rellenar_annios_nulos_no_necesitan_reforma(data):
 
 def rellenar_annio_outlier(data):
     '''Funcion para rellenar un año de construccion incorrecto'''
-    media_año_barrio_s = data[(data['ubicacion'] == 'Barrio de Salamanca, Madrid') & (data['annio_construccion'].notna())].sort_values(by = 'annio_construccion').groupby('ubicacion')['annio_construccion'].median(numeric_only = True).astype(int)
+    # media_año_barrio_s = data[(data['ubicacion'] == 'Barrio de Salamanca, Madrid') & (data['annio_construccion'].notna())].sort_values(by = 'annio_construccion').groupby('ubicacion')['annio_construccion'].median(numeric_only = True).astype(int)
     data['annio_construccion'].replace(8170.0, 1947, inplace= True)
     return data
 
@@ -210,8 +208,8 @@ def sacar_metros_cuadrados_nuevos(data):
     try:
         data.drop(columns=['metros_cuadrados'], axis= 1, inplace=True)
         data['metros_cuadrados'] = (data['precio_venta'] / data['precio_venta_por_m2']).round()
-    except Exception as a:
-        print(f"No pude tranformar el dataframe en la función 'sacar_metros_cuadrados_nuevos'")
+    except Exception:
+        print("No pude tranformar el dataframe en la función 'sacar_metros_cuadrados_nuevos'")
     return data
 
 def rellenar_exterior(data):
@@ -336,7 +334,7 @@ def obtener_coordenadas(data):
                     latitud = float(input('Lat: '))
                     longitud = float(input('Long: '))
                     return latitud, longitud
-            except:
+            except ValueError:
                 pass
 
         dicc = []
@@ -405,7 +403,7 @@ def prueba_grafica_normalidad(data):
     '''Función para analizar graficamente si una variable tiene una distribución normal'''
     try: 
         probplot(data['precio_venta_por_m2'], dist="norm", plot=plt)
-        plt.title(f'Q-Q Plot de Precio de venta por m2')
+        plt.title('Q-Q Plot de Precio de venta por m2')
         plt.show()
     except Exception as a:
         print(f"No pude analizar la variable por {a}")
@@ -428,7 +426,7 @@ def pair_plot(data):
     '''Funcion para ver graficamente como se comportan algunas de  las variables cuantitativas'''
     try:
         df_cuant_pair_plot = data.select_dtypes(include = 'number').drop(columns=['annio_construccion', 'latitud', 'longitud'], axis=1)
-        sns.pairplot(df_cuant_pair_plot, kind='reg', palette='husl', markers='.');
+        sns.pairplot(df_cuant_pair_plot, kind='reg', palette='husl', markers='.')
     except Exception as a:
         print(f"No pude hacer el gráfico por {a}")
 
@@ -436,8 +434,8 @@ def precio_cee(data):
     '''Función para ver graficamente la relación que existe entre la letra del certificado energético y el precio de venta por metro cuadrado'''
     try: 
         df_precio_venta_cee = data.groupby('cee', as_index=False).mean(numeric_only = True)
-        ax = sns.catplot(x = 'precio_venta_por_m2', y='cee', hue = 'cee', kind= 'bar',
-        data=df_precio_venta_cee.sort_values(by='cee'), palette='husl');
+        sns.catplot(x = 'precio_venta_por_m2', y='cee', hue = 'cee', kind= 'bar',
+        data=df_precio_venta_cee.sort_values(by='cee'), palette='husl')
         # ax.set_xticklabels(df_precio_venta_cee['cee'].sort_values().unique(), rotation=90)
         plt.title('Relación entre CEE y Precio de venta por metros cuadrados')
     except Exception as a:
@@ -447,7 +445,7 @@ def precio_tipo_inmueble(data):
     '''Función para ver graficamente la relación que existe entre el tipo de inmueble y el precio de venta por metro cuadrado'''
     try: 
         df_precio_venta_tipo_inmueble = data.groupby('tipo_inmueble', as_index=False, sort=True).mean(numeric_only = True)
-        ax = sns.catplot(x= 'precio_venta_por_m2', y = 'tipo_inmueble', data = df_precio_venta_tipo_inmueble, kind='bar', hue = 'tipo_inmueble', palette='husl')
+        sns.catplot(x= 'precio_venta_por_m2', y = 'tipo_inmueble', data = df_precio_venta_tipo_inmueble, kind='bar', hue = 'tipo_inmueble', palette='husl')
         # ax.set_xticklabels(df_precio_venta_tipo_inmueble['tipo_inmueble'].sort_values().unique(), rotation = -45)
         plt.title('Relación entre tipo de inmueble y Precio de venta por metros cuadrados')
     except Exception as a:
@@ -482,8 +480,8 @@ def grafico_precio_zona_yvariable(data, variable):
     '''
     data.sort_values(by= 'precio_venta_por_m2')
     try:
-        ax = sns.catplot(x = 'precio_venta_por_m2', y='zona', hue = variable, kind= 'bar', palette='husl',
-            data=data, errorbar = 'sd', err_kws={'linewidth': 1});
+        sns.catplot(x = 'precio_venta_por_m2', y='zona', hue = variable, kind= 'bar', palette='husl',
+            data=data, errorbar = 'sd', err_kws={'linewidth': 1})
         # ax.set_xticklabels(data['zona'].sort_values().unique(), rotation = -45)
         plt.title(f'Relación entre {variable} y precio de venta por m2 por Zonas')
     except Exception as a:
@@ -496,8 +494,8 @@ def grafico_precio_tipo_inmueble_yvariable(data, variable):
     variable = columa dataframe
     '''
     try:
-        ax = sns.catplot(x = 'precio_venta_por_m2', y='tipo_inmueble', hue = variable, kind= 'bar', palette='husl',
-            data=data, errorbar = 'sd', err_kws={'linewidth': 1});
+        sns.catplot(x = 'precio_venta_por_m2', y='tipo_inmueble', hue = variable, kind= 'bar', palette='husl',
+            data=data, errorbar = 'sd', err_kws={'linewidth': 1})
         # ax.set_xticklabels(data['zona'].sort_values().unique(), rotation = -45)
         plt.title(f'Relación entre {variable} y precio de venta por m2 por Tipo de inmueble')
     except Exception as a:
@@ -511,10 +509,10 @@ def grafico_precio_zona(data):
     '''
     try:
         orden = data.groupby('zona')['precio_venta_por_m2'].mean().sort_values(ascending=False).index
-        ax = sns.catplot(x = 'precio_venta_por_m2', y='zona', hue = 'zona', kind= 'bar', palette='husl',
-            data=data, errorbar = 'sd', err_kws={'linewidth': 1}, order= orden);
+        sns.catplot(x = 'precio_venta_por_m2', y='zona', hue = 'zona', kind= 'bar', palette='husl',
+            data=data, errorbar = 'sd', err_kws={'linewidth': 1}, order= orden)
         # ax.set_xticklabels(data['zona'].sort_values().unique(), rotation = -45)
-        plt.title(f'Relación entre la zona y precio de venta por m2')
+        plt.title('Relación entre la zona y precio de venta por m2')
     except Exception as a:
         print(f"No pude hacer el gráfico por {a}")
 
@@ -522,7 +520,7 @@ def grafico_precio_var1(data, variable):
     '''Función para ver graficamente la relación que existe entre la letra del certificado energético y el precio de venta por metro cuadrado'''
     try: 
         df_precio_venta_var = data.groupby(variable, as_index=False).mean(numeric_only = True)
-        ax = sns.catplot(y = 'precio_venta_por_m2', x=variable, hue = variable, kind= 'bar',
+        sns.catplot(y = 'precio_venta_por_m2', x=variable, hue = variable, kind= 'bar',
         data=df_precio_venta_var, palette= 'husl')
         # ax.set_xticklabels(df_precio_venta_cee[variable].sort_values().unique(), rotation=90)
         plt.title(f'Relación entre {variable} y Precio de venta por metros cuadrados')
