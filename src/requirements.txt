@@ -1,22 +1,12 @@
-Librerias que vamos a usar
-
-Librerías estándar:
 pathlib
-sys
-os
 pandas
 numpy
 seaborn
 matplotlib
-pickle
-traceback
-inspect
 scipy
 plotly
 geopy
-
-
-Librerías de modelos de machine learning:
 xgboost
 yellowbrick
 scikit-learn
+flask
