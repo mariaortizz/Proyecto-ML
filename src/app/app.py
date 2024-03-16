@@ -1,6 +1,6 @@
 '''Archivo por el que corre la aplicación'''
 
-from flask import Flask
+from flask import Flask, render_template
 import os 
 
 os.chdir(os.path.dirname(__file__))
@@ -8,6 +8,10 @@ os.chdir(os.path.dirname(__file__))
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object("config")
 # app.config.from_pyfile("config.py")
+
+@app.route('/')
+def home():
+    return render_template("home.html")
 
 @app.route('/')
 def index():

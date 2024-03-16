@@ -1,2 +1,2 @@
 #librerías que necesita tu modelo 
-Pandas
+Flask
