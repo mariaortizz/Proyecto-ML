@@ -1,31 +1,16 @@
-#librerias estandar
-from pathlib import Path
-import sys
-import os
 import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import pickle
 
-#librerias modelos
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, OneHotEncoder, RobustScaler
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.metrics import mean_squared_error
+# Supongamos que 'datos_entrenamiento' es tu DataFrame original usado para entrenar el modelo
+# Y 'nuevos_datos_df' es tu nuevo DataFrame con los datos a predecir
 
-from sklearn.svm import SVR
-from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
-from sklearn.ensemble import  RandomForestRegressor,  VotingRegressor, GradientBoostingRegressor, HistGradientBoostingRegressor, StackingRegressor
-from xgboost import XGBRegressor
+# 1. Asegúrate de que 'nuevos_datos_df' tenga las mismas columnas que 'datos_entrenamiento'
+columnas_nuevos_datos = datos_entrenamiento.columns
+nuevos_datos_df = nuevos_datos_df[columnas_nuevos_datos]
 
-#cluster
-from sklearn.metrics import silhouette_score
-from yellowbrick.cluster import silhouette_visualizer
-from sklearn.cluster import KMeans 
+# 2. Convierte 'nuevos_datos_df' en un arreglo NumPy
+nuevos_datos = nuevos_datos_df.values
 
-pd.set_option('display.max_columns', None)
-sys.path.append('..')
+# 3. Realiza predicciones con el modelo KMeans
+nuevas_predicciones = kmeans.predict(nuevos_datos)
 
-#modulos propios
-from utils import funciones as f
+print("Predicciones para los nuevos datos:", nuevas_predicciones)

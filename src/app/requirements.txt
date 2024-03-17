@@ -1,2 +1,5 @@
 #librerías que necesita tu modelo 
 Flask
+scikit-learn
+pathlib
+pickle

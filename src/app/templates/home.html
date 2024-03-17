@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Predicción</title>
+    <style>
+        @font-face {
+            font-family: 'Questrial';
+            src: url('src/app/fonts/Questrial-Regular.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Questrial', Arial, sans-serif; 
+            background-image: url('https://www.spain.info/.content/imagenes/cabeceras-grandes/madrid/vistas-madrid-s354842273.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.5); /* Capa blanca semi-transparente */
+            z-index: 1;
+        }
+
+        #header {
+            text-align: center;
+            color: #242424;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        #texto {
+            text-align: center;
+            color: #242424;
+            font-size: 20px;
+            text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        #button {
+            margin-top: 20px;
+            background-color: #695FAF;
+            border: none;
+            color: #242424;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+            z-index: 3; /* Asegurar que el botón esté por encima de la capa blanca */
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>¿Cuánto Cuesta?</h1>
+    </div>
+    <div id="texto">
+        <p>Mediante la especificación de las características del inmueble <br>
+            podemos hacer una predicción del precio medio de la vivienda</p>
+    </div>
+    <a id="button" href="/predict">Valorar inmueble</a>
+</body>
+</html>
