@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto ML</title>
+    <title>Proyecto ML - Valorar</title>
     <style>
         @font-face {
             font-family: 'Questrial';
@@ -14,7 +14,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Questrial', Arial, sans-serif; 
-            background-color: #ffffff; /* Fondo blanco sólido */
+            background-color: #e7e7e7e3;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -24,28 +24,27 @@
         }
 
         #formulario-container {
-            background-color: #ffffff; /* Fondo blanco sólido */
+            background-color: #f2f2f2; 
             padding: 20px;
             border-radius: 10px;
-            color: #000000; /* Color de texto negro */
+            color: #000000; 
             max-width: 500px;
             position: relative;
-            z-index: 2; /* Asegurar que el formulario esté por encima de cualquier otro contenido */
-            margin: 20px; /* Margen exterior alrededor del formulario */
+            z-index: 2; 
+            margin: 20px; 
         }
 
-        /* Estilo para los campos del formulario */
+
         #formulario label,
         #formulario input,
         #formulario select {
             display: block;
-            margin-bottom: 15px; /* Espacio vertical entre los elementos del formulario */
-            border: 1px solid #CCCCCC; /* Borde gris entre los elementos */
-            border-radius: 5px; /* Esquinas redondeadas */
-            padding: 10px; /* Espacio interior */
+            margin-bottom: 20px; 
+            border: 1px solid #CCCCCC; 
+            border-radius: 5px; 
+            padding: 20px; 
         }
 
-        /* Estilo para el botón de envío del formulario */
         button[type="submit"] {
             margin-top: 20px;
             background-color: #695FAF;
@@ -62,7 +61,7 @@
     </style>
 </head>
 <body>
-    <h1>Formulario de Predicción de Precio</h1>
+    <h1>Caracterristicas del inmueble</h1>
     <form action="/predict" method="POST">
         <label for="balcon">Balcón:</label>
         <select id="balcon" name="balcon">
