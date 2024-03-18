@@ -51,8 +51,8 @@ def predict():
 
             construccion_e, metros_e = aplicar_escalado(construccion, metros, ESCALER)
 
-            precio = aplicar_modelo(CLUSTER, MODELOS, balcon, armarios, estacionamiento, 
-                                    trastero, terraza, construccion_e, metros_e, bannos, 
+            precio = aplicar_modelo(CLUSTER, MODELOS, balcon, armarios, estacionamiento,
+                                    trastero, terraza, construccion_e, metros_e, bannos,
                                     lat, long, cee, zona, piso, casa, duplex, atico)
             
             return render_template("predict.html", precio_pred = f"€ {precio[0]:.2f}")
