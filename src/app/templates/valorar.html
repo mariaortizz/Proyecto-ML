@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto ML</title>
+    <style>
+        @font-face {
+            font-family: 'Questrial';
+            src: url('src/app/fonts/Questrial-Regular.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Questrial', Arial, sans-serif; 
+            background-color: #ffffff; /* Fondo blanco sólido */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #formulario-container {
+            background-color: #ffffff; /* Fondo blanco sólido */
+            padding: 20px;
+            border-radius: 10px;
+            color: #000000; /* Color de texto negro */
+            max-width: 500px;
+            position: relative;
+            z-index: 2; /* Asegurar que el formulario esté por encima de cualquier otro contenido */
+            margin: 20px; /* Margen exterior alrededor del formulario */
+        }
+
+        /* Estilo para los campos del formulario */
+        #formulario label,
+        #formulario input,
+        #formulario select {
+            display: block;
+            margin-bottom: 15px; /* Espacio vertical entre los elementos del formulario */
+            border: 1px solid #CCCCCC; /* Borde gris entre los elementos */
+            border-radius: 5px; /* Esquinas redondeadas */
+            padding: 10px; /* Espacio interior */
+        }
+
+        /* Estilo para el botón de envío del formulario */
+        button[type="submit"] {
+            margin-top: 20px;
+            background-color: #695FAF;
+            border: none;
+            color: #FFFFFF;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Predicción de Precio</h1>
+    <form action="/predict" method="POST">
+        <label for="balcon">Balcón:</label>
+        <select id="balcon" name="balcon">
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <label for="armarios">Armarios:</label>
+        <select id="armarios" name="armarios">
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <label for="estacionamiento">Estacionamiento:</label>
+        <select id="estacionamiento" name="estacionamiento">
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <label for="trastero">Trastero:</label>
+        <select id="trastero" name="trastero">
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <label for="terraza">Terraza:</label>
+        <select id="terraza" name="terraza">
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <label for="construccion">Construcción (m<sup>2</sup>):</label>
+        <input type="number" id="construccion" name="construccion"><br>
+
+        <label for="metros">Metros (m<sup>2</sup>):</label>
+        <input type="number" id="metros" name="metros"><br>
+
+        <label for="bannos">Baños:</label>
+        <input type="number" id="bannos" name="bannos"><br>
+
+        <label for="lat">Latitud:</label>
+        <input type="number" id="lat" name="lat" step="any"><br>
+
+        <label for="long">Longitud:</label>
+        <input type="number" id="long" name="long" step="any"><br>
+
+        <label for="cee">Certificado energético:</label>
+        <select id="cee" name="cee">
+            <option value="0">No indicado</option>
+            <option value="1">Inmueble exento</option>
+            <option value="2">En trámite</option>
+            <option value="3">G</option>
+            <option value="4">F</option>
+            <option value="5">E</option>
+            <option value="6">D</option>
+            <option value="7">C</option>
+            <option value="8">B</option>
+            <option value="9">A</option>
+        </select><br>
+
+        <label for="zona">Zona:</label>
+        <select id="zona" name="zona">
+            <option value="0">Arganzuela</option>
+            <option value="1">Barajas</option>
+            <option value="2">Carabanchel</option>
+            <option value="3">Centro</option>
+            <option value="4">Chamartin</option>
+            <option value="5">Chamberi</option>
+            <option value="6">Ciudad Lineal</option>
+            <option value="7">Fuencarral</option>
+            <option value="8">Hortaleza</option>
+            <option value="9">Latina</option>
+            <option value="10">Moncloa</option>
+            <option value="11">Moratalaz</option>
+            <option value="12">Puente de Vallecas</option>
+            <option value="13">Retiro</option>
+            <option value="14">Salamanca</option>
+            <option value="15">Tetuan</option>
+            <option value="16">Usera</option>
+            <option value="17">Villa de Vallecas</option>
+            <option value="18">Vicálvaro</option>
+            <option value="19">Villaverde</option>
+        </select><br>
+
+        <label for="tipo_inmueble">Tipo de inmueble:</label>
+        <select id="tipo_inmueble" name="tipo_inmueble">
+            <option value="piso">Piso</option>
+            <option value="casa">Casa/Chalet</option>
+            <option value="duplex">Dúplex</option>
+            <option value="atico">Ático</option>
+        </select><br>
+
+        <button type="submit">Valorar inmueble</button>
+    </form>
+</body>
+</html>
