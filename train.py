@@ -1,5 +1,5 @@
 #modulos propios
-from utils import funciones as f
+from App.utils import funciones as f
 
 #librerias estandar
 import os
