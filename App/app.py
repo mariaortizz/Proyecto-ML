@@ -5,6 +5,8 @@ from pathlib import Path
 from models_funciones import extraccion_cluster, extraccion_escalado, \
     extraccion_modelos, aplicar_escalado, transf_tipo_inmueble, aplicar_modelo
 
+os.chdir(os.path.dirname(__file__))
+
 ruta_modelos = Path(os.getcwd(), 'model', 'modelos_cluster_012.zip')
 ruta_cluster = Path(os.getcwd(), 'model', 'modelo_kmeans.pkl')
 ruta_escalado = Path(os.getcwd(), 'model', 'robust_scaler_model.pkl')
@@ -13,7 +15,6 @@ MODELOS = extraccion_modelos(ruta_modelos)
 CLUSTER = extraccion_cluster(ruta_cluster)
 ESCALER = extraccion_escalado(ruta_escalado)
 
-# os.chdir(os.path.dirname(__file__))
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object("config")
