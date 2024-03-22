@@ -61,11 +61,14 @@ def predict():
 
                 rango_precio_min = (precio[0] - dicc_rango[cluster_valor])*metros
                 rango_precio_max = (precio[0] + dicc_rango[cluster_valor])*metros
+                precio_medio = (precio[0])*metros
                 
                 return render_template("predict.html", 
                                        precio_pred = f"{precio[0]:.2f} €/m2", 
                                        rango_min = f"{rango_precio_min:.2f} €/m2",
-                                       rango_max = f"{rango_precio_max:.2f} €/m2")
+                                       rango_max = f"{rango_precio_max:.2f} €/m2",
+                                       precio_med = f"{precio_medio:.2f} €/m2")
+
         else:
             return "Metodo no permitido"
     except ValueError:
