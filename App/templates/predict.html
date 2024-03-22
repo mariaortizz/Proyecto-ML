@@ -36,6 +36,20 @@
             font-size: 30px;
             font-weight: bold; 
         }
+        .btn-inicio {
+            background-color: #695FAF; 
+            color: #FFFFFF; 
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-inicio:hover {
+            background-color: #4A4384;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +57,8 @@
         <h1>El precio medio por m2 del inmueble es de: </h1><br>
         <span id="precio_pred"> {{ precio_pred }}</span>
         <h1>El rango de precio se situa entre estos dos valores </h1><br>
-        <span id="precio_pred"> {{ rango_min }} - {{ rango_max }}</span>
+        <span id="precio_pred"> {{ rango_min }} - {{ rango_max }}</span> <br>
+        <a href="/" class="btn-inicio">Volver al inicio</a>
     </div>
 </body>
 </html>
