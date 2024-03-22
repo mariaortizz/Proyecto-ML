@@ -115,7 +115,7 @@ def aplicar_modelo(
         print(valores)
         precio = model.predict(valores)
         print(precio)
-        return precio
+        return precio, cluster_pred[0]
     except Exception as a:
         traceback.print_exc()
         func = inspect.stack()[1].function

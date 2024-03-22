@@ -31,9 +31,7 @@ def valorar():
 @app.route('/predict', methods = ['POST', 'GET'])
 def predict():
     try:
-        
         if request.method == 'POST':
-
             balcon = 1 if request.form['balcon'] == "SI" else 0
             armarios = 1 if request.form['armarios'] == "SI" else 0
             estacionamiento = 1 if request.form['estacionamiento'] == "SI" else 0
@@ -48,15 +46,26 @@ def predict():
             zona = float(request.form['zona'])
             tipo_inmueble = request.form['tipo_inmueble']
 
-            piso, casa, duplex, atico = transf_tipo_inmueble(tipo_inmueble)
+            if construccion < 0 or metros < 0 or bannos < 0 or lat < 0:
+                return render_template("valores_negativos.html")
+            else:
+                piso, casa, duplex, atico = transf_tipo_inmueble(tipo_inmueble)
 
-            construccion_e, metros_e = aplicar_escalado(construccion, metros, ESCALER)
+                construccion_e, metros_e = aplicar_escalado(construccion, metros, ESCALER)
 
-            precio = aplicar_modelo(CLUSTER, MODELOS, balcon, armarios, estacionamiento,
-                                    trastero, terraza, construccion_e, metros_e, bannos,
-                                    lat, long, cee, zona, piso, casa, duplex, atico)
-            
-            return render_template("predict.html", precio_pred = f"€ {precio[0]:.2f}")
+                precio, cluster_valor = aplicar_modelo(CLUSTER, MODELOS, balcon, armarios, estacionamiento,
+                                        trastero, terraza, construccion_e, metros_e, bannos,
+                                        lat, long, cee, zona, piso, casa, duplex, atico)
+                
+                dicc_rango = {0 : 884.5, 1 : 1038.9, 2 : 942.1}
+
+                rango_precio_min = (precio[0] - dicc_rango[cluster_valor])*metros
+                rango_precio_max = (precio[0] + dicc_rango[cluster_valor])*metros
+                
+                return render_template("predict.html", 
+                                       precio_pred = f"{precio[0]:.2f} €/m2", 
+                                       rango_min = f"{rango_precio_min:.2f} €/m2",
+                                       rango_max = f"{rango_precio_max:.2f} €/m2")
         else:
             return "Metodo no permitido"
     except ValueError:
